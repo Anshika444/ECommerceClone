@@ -102,9 +102,6 @@ const ProductPage = () => {
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     const filteredProducts = [...filteredFeatureProducts, ...filteredDummyProducts];
-
-
-
     return (
         <div className="product-page">
             <h2>Search Results for: <strong>{searchTerm}</strong></h2>
