@@ -2,6 +2,9 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetail.css';
 import Home from './Home';
+import { useShop } from '../context/ShopContext';
+import { Link } from 'react-router-dom';
+
 
 const featuredProducts = [
     {
@@ -94,46 +97,50 @@ const dummyProducts = [
 ];
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const productId = parseInt(id ?? '');
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const productId = parseInt(id ?? '');
+    const { addToCart, addToWishlist } = useShop();
+ 
+    const product =
+        dummyProducts.find(p => p.id === productId) ||
+        featuredProducts.find(p => p.id === productId);
 
-const product =
-  dummyProducts.find(p => p.id === productId) ||
-  featuredProducts.find(p => p.id === productId);
+    if (!product) {
+        return (
+            <div className="detail-page">
+                <p>Product not found</p>
+                <button onClick={() => navigate(-1)}>Go Back</button>
+            </div>
+        );
+    }
+    //   if (!fProduct) {
+    //     return (
+    //       <div className="detail-page">
+    //         <p>Product not found</p>
+    //         <button onClick={() => navigate(-1)}>Go Back</button>
+    //       </div>
+    //     );
+    //   }
 
-  if (!product) {
     return (
-      <div className="detail-page">
-        <p>Product not found</p>
-        <button onClick={() => navigate(-1)}>Go Back</button>
-      </div>
-    );
-  }
-//   if (!fProduct) {
-//     return (
-//       <div className="detail-page">
-//         <p>Product not found</p>
-//         <button onClick={() => navigate(-1)}>Go Back</button>
-//       </div>
-//     );
-//   }
-
-  return (
-    <div className="detail-page">
-      <div className="product-detail-card">
-        <img src={product.image} alt={product.name} />
-        <div className="details">
-          <h1>{product.name}</h1>
-          <p className="price">{product.price}</p>
-          <p className="desc">
-            This is a high-quality product designed for everyday use. Stylish, durable, and comfortable.
-          </p>
-          <button className="btn">Add to Cart</button>
+        <div className="detail-page">
+            <div className="product-detail-card">
+                <img src={product.image} alt={product.name} />
+                <div className="details">
+                    <h1>{product.name}</h1>
+                    <p className="price">{product.price}</p>
+                    <p className="desc">
+                        This is a high-quality product designed for everyday use. Stylish, durable, and comfortable.
+                    </p>
+                    <button className="btn" onClick={() => addToCart(product)}>Add to Cart</button>
+                    <button className="btn-outline" onClick={() => addToWishlist(product)}>Add to Wishlist</button>
+                    <button ><Link to="/cart">Cart</Link></button>
+                    <button ><Link to="/wishlist">Wishlist</Link></button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ProductDetail;

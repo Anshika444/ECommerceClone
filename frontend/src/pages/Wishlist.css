@@ -1,0 +1,80 @@
+.wishlist-page {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .wishlist-page h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .wishlist-item {
+    display: table-cell;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .wishlist-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .wishlist-item img {
+    width: 120px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  .wishlist-item h4 {
+    font-size: 18px;
+    margin: 0 0 8px 0;
+    color: #444;
+  }
+  
+  .wishlist-item p {
+    font-weight: bold;
+    color: #e91e63;
+    margin-bottom: 8px;
+  }
+  
+  .wishlist-item button {
+    padding: 8px 14px;
+    margin-right: 10px;
+    background-color: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .wishlist-item button:hover {
+    background-color: #d81b60;
+  }
+  
+  .wishlist-item a {
+    font-size: 14px;
+    text-decoration: none;
+    color: #1976d2;
+    transition: color 0.2s;
+  }
+  
+  .wishlist-item a:hover {
+    color: #0d47a1;
+  }
+  
+  .wishlist-item > div {
+    margin-left: 20px;
+  }
+  
