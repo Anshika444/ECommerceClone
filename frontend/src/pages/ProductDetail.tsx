@@ -135,8 +135,8 @@ const ProductDetail = () => {
                     </p>
                     <button className="btn" onClick={() => addToCart(product)}>Add to Cart</button>
                     <button className="btn-outline" onClick={() => addToWishlist(product)}>Add to Wishlist</button>
-                    <button ><Link to="/cart">Cart</Link></button>
-                    <button ><Link to="/wishlist">Wishlist</Link></button>
+                    {/* <button ><Link to="/cart">Cart</Link></button>
+                    <button ><Link to="/wishlist">Wishlist</Link></button> */}
                 </div>
             </div>
         </div>

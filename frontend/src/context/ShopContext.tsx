@@ -6,6 +6,7 @@ export interface Product {
   price: string;
   image: string;
   quantity?:number;
+  size?: string;
 }
 
 interface ShopContextType {
