@@ -28,12 +28,28 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   //     setCart([...cart, product]);
   //   }
   // };
+  // const addToCart = (product: Product) => {
+  //   const existingProduct = cart.find(item => item.id === product.id);
+  
+  //   if (existingProduct) {
+  //     const updatedCart = cart.map(item =>
+  //       item.id === product.id
+  //         ? { ...item, quantity: (item.quantity || 1) + 1 }
+  //         : item
+  //     );
+  //     setCart(updatedCart);
+  //   } else {
+  //     setCart([...cart, { ...product, quantity: 1 }]);
+  //   }
+  // };
   const addToCart = (product: Product) => {
-    const existingProduct = cart.find(item => item.id === product.id);
+    const existingProduct = cart.find(item =>
+      item.id === product.id && item.size === product.size
+    );
   
     if (existingProduct) {
       const updatedCart = cart.map(item =>
-        item.id === product.id
+        item.id === product.id && item.size === product.size
           ? { ...item, quantity: (item.quantity || 1) + 1 }
           : item
       );
@@ -43,18 +59,39 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   
+  
   console.log(cart);
 
+  // const addToWishlist = (product: Product) => {
+  //   if (!wishlist.some(item => item.id === product.id)) {
+  //     setWishlist([...wishlist, product]);
+  //   }
+  // };
   const addToWishlist = (product: Product) => {
-    if (!wishlist.some(item => item.id === product.id)) {
-      setWishlist([...wishlist, product]);
+    const exists = wishlist.some(item => item.id === product.id && item.size === product.size);
+  
+    if (!exists) {
+      setWishlist(prev => [...prev, product]);
     }
   };
+  
+  
 
-  const moveToCart = (product: Product) => {
-    setWishlist(wishlist.filter(item => item.id !== product.id));
-    addToCart(product);
-  };
+  // const moveToCart = (product: Product) => {
+  //   setWishlist(wishlist.filter(item => item.id !== product.id));
+  //   addToCart(product);
+  // };
+ const moveToCart = (product: Product) => {
+  // First, add to cart
+  addToCart(product);
+
+  // Then, remove the exact same product (with size) from wishlist
+  setWishlist(prev =>
+    prev.filter(item => !(item.id === product.id && item.size === product.size))
+  );
+};
+
+  
 
   return (
     <ShopContext.Provider value={{ cart, wishlist, addToCart, addToWishlist, moveToCart }}>

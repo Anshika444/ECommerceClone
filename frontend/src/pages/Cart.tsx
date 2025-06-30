@@ -34,6 +34,7 @@ const Cart = () => {
                 <div className="cart-info">
                   <h4>{item.name}</h4>
                   <p>{item.price}</p>
+                  <p><strong>Size:</strong> {item.size}</p>
                   <p><strong>Quantity:</strong> {item.quantity || 1}</p>
                 </div>
               </div>

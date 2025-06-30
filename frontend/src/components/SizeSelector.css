@@ -1,0 +1,51 @@
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    width: 300px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .size-options {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+  }
+  
+  .size-btn {
+    padding: 10px;
+    border: 1px solid gray;
+    background: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .size-btn.selected {
+    background-color: #e91e63;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .modal-actions button {
+    margin: 0 10px;
+    padding: 8px 14px;
+    border: none;
+    background: #6200ea;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  

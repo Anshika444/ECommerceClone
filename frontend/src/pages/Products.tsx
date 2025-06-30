@@ -7,6 +7,7 @@ const allProducts = [
     name: 'Roadster Men Slim Fit T-Shirt',
     price: '₹499',
     image: 'https://assets.myntassets.com/h_480,q_100,w_360/v1/assets/images/2225360/2020/1/30/f17959e0-02dd-47c2-94c0-bc9f8dfd1fbd1580390756551-Roadster-Men-Blue--Grey-Slim-Fit-Round-Neck-T-shirt-5371580-1.jpg',
+    size:'S'
   },
   {
     id: 2,
