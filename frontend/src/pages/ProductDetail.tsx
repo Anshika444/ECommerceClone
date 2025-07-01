@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import { Product } from '../context/ShopContext'
 import SizeSelectorModal from '../components/SizeSelectorModal';
 import Cart from './Cart';
+import { User, Heart, ShoppingCart, Search } from 'lucide-react';
+import { toast } from 'react-toastify';
+
 
 
 const featuredProducts = [
@@ -128,6 +131,8 @@ const ProductDetail = () => {
         }
         if (!product) return <div>Product not found</div>;
         addToCart({ ...product, size: selectedSize });
+        toast("🛒 Item added to cart!");
+        alert("Added to cart")
     };
     const handleAddToWishlist = () => {
         if (!selectedSize) {
@@ -137,6 +142,7 @@ const ProductDetail = () => {
         if (!product) return <div>Product not found</div>;
 
         addToWishlist({ ...product, size: selectedSize });
+        alert("Added to wishlist")
     };
 
 
@@ -147,6 +153,20 @@ const ProductDetail = () => {
             setSelectedProduct(null);
         }
     };
+
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const filteredFeatureProducts = featuredProducts.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredDummyProducts = dummyProducts.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const handleSearch = (e: { key: string }) => {
+        if (e.key === 'Enter' && searchQuery.trim()) {
+            navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    };
+
 
     const product =
         dummyProducts.find(p => p.id === productId) ||
@@ -171,6 +191,35 @@ const ProductDetail = () => {
 
     return (
         <div className="product-detail-page">
+            <header className="navbar">
+                <div className="logo"><a href="/" className='logo'>ShopVerse</a></div>
+                <nav className="nav-links">
+                    <a href="#">Men</a>
+                    <a href="#">Women</a>
+                    <a href="#">Kids</a>
+                    <a href="#">Beauty</a>
+                </nav>
+                <div className="top-icons">
+                    <User className="icon" onClick={() => navigate('/profile')} />
+                    <Heart className="icon" onClick={() => navigate('/wishlist')} />
+                    <ShoppingCart className="icon" onClick={() => navigate('/cart')} />
+                </div>
+            </header>
+
+            <div className="search-bar">
+                <div className="search-container">
+                    <Search className="search-icon" />
+                    <input
+                        type="text"
+                        placeholder="Search for products, brands and more"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleSearch}
+                    />
+                </div>
+            </div>
+
+
             <img src={product.image} alt={product.name} className="product-image" />
             <h2>{product.name}</h2>
             <p className="price">{product.price}</p>
@@ -193,9 +242,7 @@ const ProductDetail = () => {
 
             <button className="cart-btn" onClick={handleAddToCart}>Add to Cart</button>
             <button className="wishlist-btn" onClick={handleAddToWishlist}>Add to Wishlist</button>
-            <button onClick={() => navigate('/cart')}>
-                Cart
-            </button>
+
         </div>
     );
 };

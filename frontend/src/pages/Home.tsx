@@ -109,16 +109,16 @@ for (let i = 0; i < featuredProducts.length; i += 4) {
 
 const Home = () => {
     const [currentSlide, setCurrentSlide] = React.useState(0);
-        const [searchQuery, setSearchQuery] = React.useState('');
-        const filteredFeatureProducts=featuredProducts.filter(product =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const filteredDummyProducts = dummyProducts.filter(product =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        const filteredProducts = [...filteredFeatureProducts, ...filteredDummyProducts];
+    const [searchQuery, setSearchQuery] = React.useState('');
+    const filteredFeatureProducts = featuredProducts.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredDummyProducts = dummyProducts.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const filteredProducts = [...filteredFeatureProducts, ...filteredDummyProducts];
     const navigate = useNavigate();
-    const handleSearch = (e:{key:string}) => {
+    const handleSearch = (e: { key: string }) => {
         if (e.key === 'Enter' && searchQuery.trim()) {
             navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
         }
@@ -128,30 +128,31 @@ const Home = () => {
     return (
         <div className="container">
             <header className="navbar">
-                <div className="logo">ShopVerse</div>
+            <div className="logo"><a href="/" className='logo'>ShopVerse</a></div>
                 <nav className="nav-links">
                     <a href="#">Men</a>
                     <a href="#">Women</a>
                     <a href="#">Kids</a>
                     <a href="#">Beauty</a>
                 </nav>
-                <div className="icons">
-                    <User />
-                    <Heart />
-                    <ShoppingCart />
+                <div className="top-icons">
+                    <User className="icon" onClick={() => navigate('/profile')} />
+                    <Heart className="icon" onClick={() => navigate('/wishlist')} />
+                    <ShoppingCart className="icon" onClick={() => navigate('/cart')} />
                 </div>
             </header>
 
             <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Search for products, brands and more"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearch}
-                />
-
-                <Search className="search-icon" />
+                <div className="search-container">
+                    <Search className="search-icon" />
+                    <input
+                        type="text"
+                        placeholder="Search for products, brands and more"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleSearch}
+                    />
+                </div>
             </div>
 
             <section className="featured">
@@ -167,14 +168,14 @@ const Home = () => {
                             <div className="carousel-slide" key={index}>
                                 {group.map((product) => (
                                     <Link to={`/product/${product.id}`} key={product.id} className="product-link">
-                                    <div className="product-card">
-                                      <img src={product.image} alt={product.name} />
-                                      <div className="info">
-                                        <h3>{product.name}</h3>
-                                        <p>{product.price}</p>
-                                      </div>
-                                    </div>
-                                  </Link>
+                                        <div className="product-card">
+                                            <img src={product.image} alt={product.name} />
+                                            <div className="info">
+                                                <h3>{product.name}</h3>
+                                                <p>{product.price}</p>
+                                            </div>
+                                        </div>
+                                    </Link>
                                 ))}
                             </div>
                         ))}
@@ -197,14 +198,14 @@ const Home = () => {
                 <div className="grid">
                     {dummyProducts.map((product) => (
                         <Link to={`/product/${product.id}`} key={product.id} className="product-link">
-                        <div className="product-card">
-                          <img src={product.image} alt={product.name} />
-                          <div className="info">
-                            <h3>{product.name}</h3>
-                            <p>{product.price}</p>
-                          </div>
-                        </div>
-                      </Link>
+                            <div className="product-card">
+                                <img src={product.image} alt={product.name} />
+                                <div className="info">
+                                    <h3>{product.name}</h3>
+                                    <p>{product.price}</p>
+                                </div>
+                            </div>
+                        </Link>
                     ))}
                 </div>
             </section>

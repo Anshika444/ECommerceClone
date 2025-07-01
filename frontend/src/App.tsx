@@ -8,17 +8,15 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import ProductPage from './pages/ProductPage';
 import Wishlist from './pages/Wishlist';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { SnackbarProvider } from 'notistack'; 
 
 function App() {
+  
   return (
+    <>  
     <Router>
-      {/* <nav className="flex gap-4 justify-center p-4 text-white bg-gray-900">
-        <a href="/">Home</a>
-        <a href="/products">Products</a>
-        <a href="/cart">Cart</a>
-        <a href="/login">Login</a>
-      </nav> */}
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductPage />} />
@@ -28,7 +26,10 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/wishlist" element={<Wishlist />} />
       </Routes>
-    </Router>
+      </Router>
+    </>
+    
+    
   );
 }
 

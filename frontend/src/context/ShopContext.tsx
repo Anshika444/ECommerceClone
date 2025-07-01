@@ -1,4 +1,6 @@
 import React, { createContext, useState, ReactNode, useContext } from 'react';
+import { toast } from 'react-toastify';
+
 
 export interface Product {
   id: number;
@@ -54,8 +56,12 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
           : item
       );
       setCart(updatedCart);
+      toast.success("🛒 Item added to cart!");
+
     } else {
       setCart([...cart, { ...product, quantity: 1 }]);
+      toast.success("🛒 Item added to cart!");
+
     }
   };
   
