@@ -1,44 +1,123 @@
 .cart-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .cart-items {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 15px;
-  }
-  
-  .cart-item img {
-    width: 100px;
-    border-radius: 8px;
-  }
-  
-  .cart-info {
-    margin-left: 20px;
-  }
-  
-  .cart-summary {
-    margin-top: 30px;
-    text-align: right;
-  }
-  
-  .checkout-btn {
-    background-color: #e91e63;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.cart-header {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+  color: #222;
+  margin-bottom: 30px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  gap: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease;
+}
+
+.cart-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.cart-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.cart-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cart-info h4 {
+  font-size: 20px;
+  color: #333;
+  margin: 0;
+}
+
+.cart-info p {
+  font-size: 16px;
+  color: #e91e63;
+  font-weight: 600;
+}
+
+.cart-info span {
+  font-size: 14px;
+  color: #666;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.quantity-controls button {
+  padding: 6px 12px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-controls button:hover {
+  background-color: #ddd;
+}
+
+.cart-summary {
+  text-align: right;
+  margin-top: 40px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.checkout-btn {
+  margin-top: 15px;
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #d81b60;
+}
+
+/* Optional: If you want checkbox too */
+.cart-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  accent-color: #e91e63;
+}

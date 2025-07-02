@@ -3,6 +3,7 @@ import { Search, Heart, ShoppingCart, User } from 'lucide-react';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useShop } from '../context/ShopContext';
 
 
 
@@ -123,12 +124,20 @@ const Home = () => {
             navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
+    const { cart } = useShop();
+
+    // Count all quantities (if you’re storing quantity)
+    const cartItemCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const { wishlist } = useShop();
+
+    // Count all quantities (if you’re storing quantity)
+    const wishlistItemCount = wishlist.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
 
     return (
         <div className="container">
             <header className="navbar">
-            <div className="logo"><a href="/" className='logo'>ShopVerse</a></div>
+                <div className="logo"><a href="/" className='logo'>ShopVerse</a></div>
                 <nav className="nav-links">
                     <a href="#">Men</a>
                     <a href="#">Women</a>
@@ -137,8 +146,19 @@ const Home = () => {
                 </nav>
                 <div className="top-icons">
                     <User className="icon" onClick={() => navigate('/profile')} />
-                    <Heart className="icon" onClick={() => navigate('/wishlist')} />
-                    <ShoppingCart className="icon" onClick={() => navigate('/cart')} />
+                    <div className="icon-wrapper" onClick={() => navigate('/wishlist')}>
+                        <Heart className="icon" />
+                        {cart.length > 0 && (
+                            <span className="cart-count">{wishlistItemCount}</span>
+                        )}
+                    </div>
+                    {/* <ShoppingCart className="icon" onClick={() => navigate('/cart')} /> */}
+                    <div className="icon-wrapper" onClick={() => navigate('/cart')}>
+                        <ShoppingCart className="icon" />
+                        {cart.length > 0 && (
+                            <span className="cart-count">{cartItemCount}</span>
+                        )}
+                    </div>
                 </div>
             </header>
 

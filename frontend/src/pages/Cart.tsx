@@ -1,49 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useShop } from '../context/ShopContext';
-import { Product } from '../context/ShopContext';
-import { Link } from 'react-router-dom';
-import './Cart.css'; // Optional: for styling
+import './Cart.css';
 
 const Cart = () => {
-  const { cart } = useShop();
+  const { cart, updateQuantity } = useShop(); // assume `updateQuantity` is available
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
-  const total = cart.reduce((acc, item) => {
-    const price = parseInt(item.price.replace('₹', ''));
-    const quantity = item.quantity || 1;
-    return acc + price * quantity;
-  }, 0);
-  
-  console.log(cart);
-  console.log(1);
+  const toggleSelection = (id: number) => {
+    setSelectedItems(prev =>
+      prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id]
+    );
+  };
+
+  const totalPrice = cart
+    .filter(item => selectedItems.includes(item.id))
+    .reduce((acc, item) => acc + (parseInt(item.price.replace('₹', '')) * (item.quantity || 1)), 0);
 
   return (
     <div className="cart-container">
-      <h2>Your Shopping Cart 🛒</h2>
-
+      <h2 className="cart-header">Your Cart</h2>
       {cart.length === 0 ? (
-        <div className="empty-cart">
-          <p>Your cart is empty.</p>
-          <Link to="/">← Continue Shopping</Link>
-        </div>
+        <p>Your cart is empty</p>
       ) : (
         <>
-          <div className="cart-items">
-            {cart.map((item: Product) => (
-              <div className="cart-item" key={item.id}>
-                <img src={item.image} alt={item.name} />
-                <div className="cart-info">
-                  <h4>{item.name}</h4>
-                  <p>{item.price}</p>
-                  <p><strong>Size:</strong> {item.size}</p>
-                  <p><strong>Quantity:</strong> {item.quantity || 1}</p>
+          {cart.map(item => (
+            <div key={item.id} className="cart-item">
+              <input
+                type="checkbox"
+                checked={selectedItems.includes(item.id)}
+                onChange={() => toggleSelection(item.id)}
+              />
+              <img src={item.image} alt={item.name} />
+              <div className="cart-info">
+                <h4>{item.name}</h4>
+                <p>{item.price}</p>
+                <div className="quantity-controls">
+                  <button onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)}>-</button>
+                  <span>{item.quantity || 1}</span>
+                  <button onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)}>+</button>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
 
           <div className="cart-summary">
-            <h3>Total: ₹{total}</h3>
-            <button className="checkout-btn">Proceed to Checkout</button>
+            <h3>Total: ₹{totalPrice}</h3>
+            <button disabled={selectedItems.length === 0}>Proceed to Checkout</button>
           </div>
         </>
       )}

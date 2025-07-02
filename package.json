@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "firebase": "^11.10.0",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.522.0",
     "notistack": "^3.0.2",

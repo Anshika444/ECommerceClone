@@ -166,7 +166,14 @@ const ProductDetail = () => {
             navigate(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
+    const { cart } = useShop();
 
+    // Count all quantities (if you’re storing quantity)
+    const cartItemCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+    const { wishlist } = useShop();
+
+    // Count all quantities (if you’re storing quantity)
+    const wishlistItemCount = wishlist.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
     const product =
         dummyProducts.find(p => p.id === productId) ||
@@ -201,8 +208,18 @@ const ProductDetail = () => {
                 </nav>
                 <div className="top-icons">
                     <User className="icon" onClick={() => navigate('/profile')} />
-                    <Heart className="icon" onClick={() => navigate('/wishlist')} />
-                    <ShoppingCart className="icon" onClick={() => navigate('/cart')} />
+                    <div className="icon-wrapper" onClick={() => navigate('/wishlist')}>
+                        <Heart className="icon" />
+                        {cart.length > 0 && (
+                            <span className="cart-count">{wishlistItemCount}</span>
+                        )}
+                    </div>
+                    <div className="icon-wrapper" onClick={() => navigate('/cart')}>
+        <ShoppingCart className="icon" />
+        {cart.length > 0 && (
+          <span className="cart-count">{cartItemCount}</span>
+        )}
+      </div>
                 </div>
             </header>
 
