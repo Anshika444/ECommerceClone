@@ -2,6 +2,8 @@ import React, { createContext, useState, ReactNode, useContext, useEffect } from
 import { toast } from 'react-toastify';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '../firebase'; 
+import { db } from '../firebase';
+import { collection, doc, setDoc, getDocs, query, where,getDoc, updateDoc } from 'firebase/firestore';
 
 export interface Product {
   id: number;
@@ -30,49 +32,87 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   const [userCarts, setUserCarts] = useState<{ [key: string]: Product[] }>({});
   const [userWishlists, setUserWishlists] = useState<{ [key: string]: Product[] }>({});
 
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //     setCurrentUser(user);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
+  
+      if (user) {
+        const cartRef = doc(db, 'carts', user.uid);
+        const cartSnap = await getDoc(cartRef);
+  
+        if (cartSnap.exists()) {
+          const data = cartSnap.data();
+          setUserCarts(prev => ({ ...prev, [user.uid]: data.items || [] }));
+        } else {
+          await setDoc(cartRef, { items: [] });
+          setUserCarts(prev => ({ ...prev, [user.uid]: [] }));
+        }
+      }
     });
+  
     return () => unsubscribe();
   }, []);
-
   // Extract current user's cart and wishlist
   const userKey = currentUser?.uid || '';
   const cart = userCarts[userKey] || [];
   const wishlist = userWishlists[userKey] || [];
 
-  const addToCart = (product: Product) => {
+  const addToCart = async (product: Product) => {
     if (!currentUser) return;
-    const existing = userCarts[userKey] || [];
-    const found = existing.find(p => p.id === product.id && p.size === product.size);
-
-    if (found) {
-      const updated = existing.map(item =>
-        item.id === product.id && item.size === product.size
-          ? { ...item, quantity: (item.quantity || 1) + 1 }
-          : item
-      );
-      setUserCarts(prev => ({ ...prev, [userKey]: updated }));
+  
+    const cartRef = doc(db, "carts", currentUser.uid);
+    const cartSnap = await getDoc(cartRef);
+    let cartItems: Product[] = cartSnap.exists() ? cartSnap.data().items : [];
+  
+    const existingIndex = cartItems.findIndex(
+      item => item.id === product.id && item.size === product.size
+    );
+  
+    if (existingIndex > -1) {
+      cartItems[existingIndex].quantity = (cartItems[existingIndex].quantity || 1) + 1;
     } else {
-      const updated = [...existing, { ...product, quantity: 1 }];
-      setUserCarts(prev => ({ ...prev, [userKey]: updated }));
+      cartItems.push({ ...product, quantity: 1 });
     }
-
+  
+    await setDoc(cartRef, { items: cartItems });
+    setUserCarts(prev => ({ ...prev, [userKey]: cartItems }));
     toast.success("🛒 Added to cart");
   };
-
-  const updateQuantity = (id: number, quantity: number) => {
+  
+  
+  const updateQuantity = async (id: number, quantity: number, size?: string) => {
     if (!currentUser) return;
+  
     const existing = userCarts[userKey] || [];
-    const updated = quantity <= 0
-      ? existing.filter(item => item.id !== id)
-      : existing.map(item =>
-          item.id === id ? { ...item, quantity } : item
-        );
-
-    setUserCarts(prev => ({ ...prev, [userKey]: updated }));
+  
+    // Correctly identify the product by id AND size
+    const updatedCart =
+      quantity <= 0
+        ? existing.filter(item => !(item.id === id && item.size === size))
+        : existing.map(item =>
+            item.id === id && item.size === size ? { ...item, quantity } : item
+          );
+  
+    setUserCarts(prev => ({ ...prev, [userKey]: updatedCart }));
+  
+    try {
+      const cartRef = doc(db, 'carts', userKey);
+      await setDoc(cartRef, { items: updatedCart });
+      toast.success("🛒 Cart updated!");
+    } catch (error) {
+      console.error("❌ Error updating Firestore:", error);
+      toast.error("Failed to update cart");
+    }
   };
+  
+  
 
   const addToWishlist = (product: Product) => {
     if (!currentUser) return;
